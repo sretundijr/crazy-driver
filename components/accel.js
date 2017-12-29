@@ -41,11 +41,10 @@ export default class Accel extends React.Component {
       const roundedAccelData = {
         x: roundUp(accelerometerData.x),
         y: roundUp(accelerometerData.y),
-        z: roundUp(accelerometerData.z),
+        z: roundUp(accelerometerData.z) / 10,
       }
-      this.props.totals(roundedAccelData)
       this.props.accelData(roundedAccelData);
-      this.setState({ accelerometerData });
+      this.props.totals();
     });
   }
 
