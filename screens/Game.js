@@ -27,6 +27,7 @@ export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      highScore: 0,
       accelData: {},
       zero: {},
       totals: {
@@ -35,6 +36,12 @@ export default class HomeScreen extends React.Component {
         z: 0,
       },
     }
+  }
+
+  setHighScore = () => {
+    this.setState({
+      highScore: this.state.totals.x + this.state.totals.y + this.state.totals.z,
+    })
   }
 
   setZeroPoint = () => {
@@ -59,6 +66,7 @@ export default class HomeScreen extends React.Component {
 
   clearValues = () => {
     this.setState({
+      highScore: 0,
       totals: {
         x: 0,
         y: 0,
@@ -74,10 +82,11 @@ export default class HomeScreen extends React.Component {
         <Accel
           accelData={this.setAccelDataScore}
           totals={this.setTotals}
+          highScore={this.setHighScore}
         />
 
         <Text>
-          Set Phone down on a flat surface and press the set zero button to calibrate the phones accelerometer.
+          Set Phone in a secure place in your vehicle where it won't slide around or move, then press calibrate.
         </Text>
         <Button
           title='Calbrate'
@@ -94,6 +103,8 @@ export default class HomeScreen extends React.Component {
           title='Clear'
           onPress={this.clearValues}
         />
+
+        <Text>Total score: {this.state.highScore}</Text>
       </View >
     );
   }

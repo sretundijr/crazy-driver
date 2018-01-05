@@ -12,13 +12,13 @@ export default class Accel extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this._toggle();
-  }
+  // componentDidMount() {
+  //   this._toggle();
+  // }
 
-  componentWillUnmount() {
-    this._unsubscribe();
-  }
+  // componentWillUnmount() {
+  //   this._unsubscribe();
+  // }
 
   _toggle = () => {
     if (this._subscription) {
@@ -37,14 +37,16 @@ export default class Accel extends React.Component {
   }
 
   _subscribe = () => {
+    Accelerometer.setUpdateInterval(500);
     this._subscription = Accelerometer.addListener(accelerometerData => {
       const roundedAccelData = {
         x: roundUp(accelerometerData.x),
         y: roundUp(accelerometerData.y),
-        z: roundUp(accelerometerData.z) / 10,
+        z: roundUp(accelerometerData.z),
       }
       this.props.accelData(roundedAccelData);
       this.props.totals();
+      this.props.highScore();
     });
   }
 
