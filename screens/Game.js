@@ -35,6 +35,8 @@ export default class HomeScreen extends React.Component {
         y: 0,
         z: 0,
       },
+      startTime: '',
+      totalTime: '',
     }
   }
 
@@ -75,6 +77,20 @@ export default class HomeScreen extends React.Component {
     });
   }
 
+  startTimer = () => {
+    this.setState({
+      startTime: Date.now(),
+    });
+  }
+
+  stopTimer = () => {
+    const delta = Date.now() - this.state.startTime;
+    this.setState({
+      startTime: '',
+      totalTime: Math.floor(delta / 1000),
+    });
+  }
+
   render() {
     let { x, y, z } = this.state.accelData;
     return (
@@ -94,6 +110,11 @@ export default class HomeScreen extends React.Component {
         />
         <Text> Calbrated zero points X: {this.state.zero.x} Y: {this.state.zero.y} Z: {this.state.zero.z}</Text>
 
+        <Button
+          title='Start'
+          onPress={this.startTimer}
+        />
+
         < Text > parent x: {x} y: {y} z: {z}</Text>
 
         <Text> high value for x: {this.state.totals.x} </Text>
@@ -105,6 +126,11 @@ export default class HomeScreen extends React.Component {
         />
 
         <Text>Total score: {this.state.highScore}</Text>
+        <Button
+          title='Stop'
+          onPress={this.stopTimer}
+        />
+        <Text>Total time: {this.state.totalTime}</Text>
       </View >
     );
   }
@@ -113,5 +139,7 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     marginTop: 30,
+    marginLeft: 20,
+    marginRight: 20,
   }
 });
