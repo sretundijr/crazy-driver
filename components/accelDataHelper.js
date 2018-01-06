@@ -23,26 +23,29 @@ const returnDifferenceFromCalibrationPoint = (n, zeroPoint) => {
 
 // n is the current value, zero point is the calibration and totals is the running score
 export const accummulateScore = (n, zeroPoint, totals) => {
+  const sensitivity = 5;
   const accumulatedTotals = {
     x: 0,
     y: 0,
     z: 0,
   }
   // todo find a better way
-  if (n.x > zeroPoint.x + 2 || n.x < zeroPoint.x - 2) {
+  if (n.x > zeroPoint.x + sensitivity || n.x < zeroPoint.x - sensitivity) {
     accumulatedTotals.x = totals.x + returnDifferenceFromCalibrationPoint(n.x, zeroPoint.x);
   } else {
     accumulatedTotals.x = totals.x;
   }
-  if (n.y > zeroPoint.y + 2 || n.y < zeroPoint.y - 2) {
+  if (n.y > zeroPoint.y + sensitivity || n.y < zeroPoint.y - sensitivity) {
     accumulatedTotals.y = totals.y + returnDifferenceFromCalibrationPoint(n.y, zeroPoint.y);
   } else {
     accumulatedTotals.y = totals.y;
   }
-  if (n.z > zeroPoint.z + 2 || n.z < zeroPoint.z - 2) {
+  if (n.z > zeroPoint.z + sensitivity || n.z < zeroPoint.z - sensitivity) {
     accumulatedTotals.z = totals.z + returnDifferenceFromCalibrationPoint(n.z, zeroPoint.z);
   } else {
     accumulatedTotals.z = totals.z;
   }
   return accumulatedTotals
 }
+
+
