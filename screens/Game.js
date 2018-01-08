@@ -15,7 +15,7 @@ import { MonoText } from '../components/StyledText';
 
 import Accel from '../components/accel';
 
-import { returnAbs, accummulateScore } from '../components/accelDataHelper';
+import { returnAbs, accummulateScore, adjustScoreByTime } from '../components/accelDataHelper';
 
 import math from 'mathjs';
 
@@ -28,6 +28,7 @@ export default class HomeScreen extends React.Component {
     super(props);
     this.state = {
       highScore: 0,
+      adjustedScore: 0,
       accelData: {},
       zero: {},
       totals: {
@@ -40,15 +41,10 @@ export default class HomeScreen extends React.Component {
     }
   }
 
-  setHighScore = () => {
-    this.setState({
-      highScore: this.state.totals.x + this.state.totals.y + this.state.totals.z,
-    })
-  }
-
   setZeroPoint = () => {
     this.setState({
       zero: this.state.accelData,
+      startTime: Date.now(),
     });
   }
 
@@ -69,6 +65,7 @@ export default class HomeScreen extends React.Component {
   clearValues = () => {
     this.setState({
       highScore: 0,
+      totalTime: '',
       totals: {
         x: 0,
         y: 0,
@@ -77,17 +74,15 @@ export default class HomeScreen extends React.Component {
     });
   }
 
-  startTimer = () => {
-    this.setState({
-      startTime: Date.now(),
-    });
-  }
-
   stopTimer = () => {
     const delta = Date.now() - this.state.startTime;
+    const totalTime = Math.floor(delta / 1000);
+    const highScore = this.state.totals.x + this.state.totals.y + this.state.totals.z;
     this.setState({
       startTime: '',
-      totalTime: Math.floor(delta / 1000),
+      totalTime,
+      highScore,
+      adjustedScore: adjustScoreByTime(highScore, totalTime),
     });
   }
 
@@ -98,22 +93,17 @@ export default class HomeScreen extends React.Component {
         <Accel
           accelData={this.setAccelDataScore}
           totals={this.setTotals}
-          highScore={this.setHighScore}
+        // highScore={this.setHighScore}
         />
 
         <Text>
           Set Phone in a secure place in your vehicle where it won't slide around or move, then press calibrate.
         </Text>
         <Button
-          title='Calbrate'
+          title='Calbrate and Start'
           onPress={this.setZeroPoint}
         />
         <Text> Calbrated zero points X: {this.state.zero.x} Y: {this.state.zero.y} Z: {this.state.zero.z}</Text>
-
-        <Button
-          title='Start'
-          onPress={this.startTimer}
-        />
 
         < Text > parent x: {x} y: {y} z: {z}</Text>
 
@@ -124,13 +114,15 @@ export default class HomeScreen extends React.Component {
           title='Clear'
           onPress={this.clearValues}
         />
-
-        <Text>Total score: {this.state.highScore}</Text>
         <Button
           title='Stop'
           onPress={this.stopTimer}
         />
+        <Text>Total score: {this.state.highScore}</Text>
+
         <Text>Total time: {this.state.totalTime}</Text>
+
+        <Text>Total adjusted score with time factor: {this.state.adjustedScore}</Text>
       </View >
     );
   }

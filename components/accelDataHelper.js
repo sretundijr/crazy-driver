@@ -48,4 +48,6 @@ export const accummulateScore = (n, zeroPoint, totals) => {
   return accumulatedTotals
 }
 
-
+export const adjustScoreByTime = (total, time) => {
+  return Math.round(total / time);
+}

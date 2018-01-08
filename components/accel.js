@@ -46,7 +46,7 @@ export default class Accel extends React.Component {
       }
       this.props.accelData(roundedAccelData);
       this.props.totals();
-      this.props.highScore();
+      // this.props.highScore();
     });
   }
 
